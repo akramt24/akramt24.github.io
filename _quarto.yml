@@ -1,22 +1,28 @@
 project:
   type: website
   output-dir: docs
-  
+
 website:
-  title: "project"
+  title: "Tahana Akram"
   navbar:
     left:
       - href: index.qmd
         text: Home
-      - about.qmd
+      - href: about.qmd
+        text: About
+    right:
+      - icon: linkedin
+        href: https://www.linkedin.com/in/tahanaakram/
+        aria-label: LinkedIn
+      - icon: github
+        href: https://github.com/akramt24
+        aria-label: GitHub
 
 format:
   html:
-    theme:
-      - cosmo
-      - brand
+    theme: cosmo
     css: styles.css
-    toc: true
+    toc: false
 
 
 
