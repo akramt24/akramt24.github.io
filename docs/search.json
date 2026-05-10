@@ -32,6 +32,34 @@
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "About this site"
+    "text": "This website is a portfolio of my academic and professional work, maintained throughout my time at Lawrence University. It showcases research projects, internship experiences, and class projects from my studies in Business Analytics, Data Science, and Entrepreneurship."
+  },
+  {
+    "objectID": "about.html#about-this-site",
+    "href": "about.html#about-this-site",
+    "title": "About",
+    "section": "",
+    "text": "This website is a portfolio of my academic and professional work, maintained throughout my time at Lawrence University. It showcases research projects, internship experiences, and class projects from my studies in Business Analytics, Data Science, and Entrepreneurship."
+  },
+  {
+    "objectID": "about.html#courses-academic-work",
+    "href": "about.html#courses-academic-work",
+    "title": "About",
+    "section": "Courses & Academic Work",
+    "text": "Courses & Academic Work\nOne highlight of my academic journey is contributing to the development of BUEN 240: Business Ethnography — a course I helped design as part of a LURF (Lawrence University Research Fellowship) project in Summer 2025 alongside Faith Onukaogu ’26 and Prof. Carla Daughtry. The course is now being offered at Lawrence University and bridges anthropological research methods with real-world business applications."
+  },
+  {
+    "objectID": "about.html#skills",
+    "href": "about.html#skills",
+    "title": "About",
+    "section": "Skills",
+    "text": "Skills\n\nAnalytics & Data: R, Python, Excel (Solver, PivotTables, VBA), Power BI\nBusiness: Market research, competitive analysis, supply chain coordination, brand strategy\nTools: Shiny, ggplot2, Canva, Microsoft Office Suite"
+  },
+  {
+    "objectID": "about.html#activities",
+    "href": "about.html#activities",
+    "title": "About",
+    "section": "Activities",
+    "text": "Activities\n\nData Science Club Member — Lawrence University\nVolunteer - KidsGive\nAccounting Tutor — Lawrence University\nLURF Research Fellow (Summer 2025)\nMailroom Assistence - Lawrence University\nDesk Worker - Wellness center, Lawrence University"
   }
 ]

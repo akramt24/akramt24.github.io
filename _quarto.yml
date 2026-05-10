@@ -10,6 +10,9 @@ website:
         text: Home
       - href: about.qmd
         text: About
+      - href: research.qmd
+        text: Research
+      
     right:
       - icon: linkedin
         href: https://www.linkedin.com/in/tahanaakram/
