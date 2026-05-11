@@ -12,6 +12,8 @@ website:
         text: About
       - href: research.qmd
         text: Research
+      - href: projects.qmd
+        text: Projects
       
     right:
       - icon: linkedin

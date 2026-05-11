@@ -1,0 +1,22 @@
+---
+title: "Projects"
+---
+
+## They Got Billions. We Got Data.
+
+This project explores global billionaire wealth using a structured database built in DuckDB, analyzing three core questions: which countries produce the most billionaires, how wealth is created (self-made vs. inherited), and who is most likely to become a billionaire based on gender and age. Using SQL queries and data visualization in R, we found that the United States dominates in billionaire volume, Europe leads in individual wealth, and self-made billionaires overwhelmingly outnumber those who inherited their fortunes across nearly every region.
+[View Project on GitHub](https://github.com/ADC-405-S26/Project_2_SQL_Team_6)
+
+---
+
+## Are Horoscopes Just Vague Nonsense? (Spoiler: Yes.)
+
+Using a dataset of 21,959 daily horoscope predictions spanning all 12 zodiac signs, we applied text mining tools — tokenization, sentiment analysis, TF-IDF, and regular expressions — to test whether horoscopes are actually personalized or just generic text recycled across signs. We found that nearly 80% of all planetary references were just the sun and moon, ruling planets barely showed up for their own signs, and the language used across all 12 signs was strikingly similar — suggesting horoscopes are less cosmic wisdom and more sophisticated-sounding copy-paste.
+[View Project on GitHub](https://github.com/ADC-405-S26/Project_3_TextAnalysis_Team_6)
+---
+
+## Netflix Explorer
+
+This project analyzed Netflix's full content library alongside a personal watch log to explore how the platform's catalog has evolved over time and what it reveals about viewing patterns. Using Python and pandas, the analysis examined content type distribution (movies vs. TV shows), genre trends, release year patterns, and personal ratings. Key findings include Netflix's dramatic content expansion between 2015 and 2019 — peaking at over 1,100 titles released in a single year — and the dominance of International Movies and Dramas as the platform's top genres. The personal watch log analysis revealed a preference for drama-heavy content, with Dynasty, Inception, and Stranger Things earning the highest ratings.
+[View Project on GitHub](https://github.com/Tahana-Project/netfix-explorer)
+---
