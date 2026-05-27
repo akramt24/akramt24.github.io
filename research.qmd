@@ -3,47 +3,29 @@ title: "Research"
 ---
 
 ## Field Experience in Ghana
-
-**January 2026 – May 2026 \| Ghana Visit: March 19–29, 2026**
+**January 2026 – May 2026 | Ghana Visit: March 19–29, 2026**
 
 ### From Dome to the Mall: What Accra's Food Markets Reveal About Trade-offs, Tech, & Tomorrow
 
-This research explored how food access in Accra, Ghana is shaped by trade-offs between affordability, flexibility, and convenience across two coexisting food systems, vibrant informal open markets and expanding modern retail. Through field interviews and observations at Dome Market and Accra Mall, the study examined how perishability, price volatility, and the absence of cold storage affect vendor livelihoods, and whether agri-tech solutions can bridge the gap.
+*Tahana Akram '27, Business and Entrepreneurship, Lawrence University*
+*Funded by the Rodger P. Kennedy and Mariette B. Kennedy Fund | Advised by Professor Claudena Skran*
 
-<br>
+This research explored how food access in Accra, Ghana is shaped by trade-offs between affordability, flexibility, and convenience across two coexisting food systems — vibrant informal open markets and expanding modern retail. Through field interviews and observations at Dome Market and Accra Mall, the study examined how perishability, price volatility, and the absence of cold storage affect vendor livelihoods, and whether agri-tech solutions can bridge the gap.
 
-::: callout-note
-📄 View the full research poster below:
-:::
+📄 [View Full Research Poster (PDF)](posters/ghana_poster.pdf)
 
-```{=html}
-<div style="margin: 1rem 0;">
-  <iframe src="posters/ghana_poster.pdf" width="100%" height="600px" style="border: 1px solid #ddd; border-radius: 6px;"></iframe>
-</div>
-```
-
-------------------------------------------------------------------------
+---
 
 ## LURF Student Research: Business Ethnography Curriculum Design
-
 **June 2025 – September 2025**
 
 ### Designing a Course in Business Ethnography at Lawrence University
 
-> **Note:** This course is now being offered at Lawrence University as **BUEN 240**.
+*Tahana Akram '27, Faith Onukaogu '26, Prof. Carla Daughtry*
+*Departments: Business and Entrepreneurship, Anthropology — Lawrence University*
+
+This course is now being offered at Lawrence University as **BUEN 240**.
 
 This Lawrence University Research Fellowship (LURF) project involved designing a full undergraduate course curriculum in Business Ethnography, a field that bridges anthropological research methods with real-world business applications. The course equips students to understand consumer behavior, organizational culture, and decision-making using tools like participant observation, in-depth interviews, and cultural analysis.
 
-<br>
-
-::: callout-note
-📄 View the full research poster below:
-:::
-
-```{=html}
-<div style="margin: 1rem 0;">
-  <iframe src="posters/ethnography_poster.pdf" width="100%" height="600px" style="border: 1px solid #ddd; border-radius: 6px;"></iframe>
-</div>
-```
-
-------------------------------------------------------------------------
+📄 [View Full Research Poster (PDF)](posters/ethnography_poster.pdf)

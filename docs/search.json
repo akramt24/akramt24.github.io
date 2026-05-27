@@ -28,6 +28,27 @@
     "text": "📧 Email: tahana.akram@lawrence.edu\n📞 Phone: 920-558-0603\n💼 LinkedIn: linkedin.com/in/tahanaakram\n🐙 GitHub: github.com/akramt24"
   },
   {
+    "objectID": "research.html",
+    "href": "research.html",
+    "title": "Research",
+    "section": "",
+    "text": "January 2026 – May 2026 | Ghana Visit: March 19–29, 2026\n\n\nTahana Akram ’27, Business and Entrepreneurship, Lawrence University Funded by the Rodger P. Kennedy and Mariette B. Kennedy Fund | Advised by Professor Claudena Skran\nThis research explored how food access in Accra, Ghana is shaped by trade-offs between affordability, flexibility, and convenience across two coexisting food systems — vibrant informal open markets and expanding modern retail. Through field interviews and observations at Dome Market and Accra Mall, the study examined how perishability, price volatility, and the absence of cold storage affect vendor livelihoods, and whether agri-tech solutions can bridge the gap.\n📄 View Full Research Poster (PDF)"
+  },
+  {
+    "objectID": "research.html#field-experience-in-ghana",
+    "href": "research.html#field-experience-in-ghana",
+    "title": "Research",
+    "section": "",
+    "text": "January 2026 – May 2026 | Ghana Visit: March 19–29, 2026\n\n\nTahana Akram ’27, Business and Entrepreneurship, Lawrence University Funded by the Rodger P. Kennedy and Mariette B. Kennedy Fund | Advised by Professor Claudena Skran\nThis research explored how food access in Accra, Ghana is shaped by trade-offs between affordability, flexibility, and convenience across two coexisting food systems — vibrant informal open markets and expanding modern retail. Through field interviews and observations at Dome Market and Accra Mall, the study examined how perishability, price volatility, and the absence of cold storage affect vendor livelihoods, and whether agri-tech solutions can bridge the gap.\n📄 View Full Research Poster (PDF)"
+  },
+  {
+    "objectID": "research.html#lurf-student-research-business-ethnography-curriculum-design",
+    "href": "research.html#lurf-student-research-business-ethnography-curriculum-design",
+    "title": "Research",
+    "section": "LURF Student Research: Business Ethnography Curriculum Design",
+    "text": "LURF Student Research: Business Ethnography Curriculum Design\nJune 2025 – September 2025\n\nDesigning a Course in Business Ethnography at Lawrence University\nTahana Akram ’27, Faith Onukaogu ’26, Prof. Carla Daughtry Departments: Business and Entrepreneurship, Anthropology — Lawrence University\nThis course is now being offered at Lawrence University as BUEN 240.\nThis Lawrence University Research Fellowship (LURF) project involved designing a full undergraduate course curriculum in Business Ethnography, a field that bridges anthropological research methods with real-world business applications. The course equips students to understand consumer behavior, organizational culture, and decision-making using tools like participant observation, in-depth interviews, and cultural analysis.\n📄 View Full Research Poster (PDF)"
+  },
+  {
     "objectID": "about.html",
     "href": "about.html",
     "title": "About",
@@ -63,27 +84,6 @@
     "text": "Activities\n\nData Science Club Member — Lawrence University\nVolunteer - KidsGive\nAccounting Tutor — Lawrence University\nLURF Research Fellow (Summer 2025)\nMailroom Assistence - Lawrence University\nDesk Worker - Wellness center, Lawrence University"
   },
   {
-    "objectID": "research.html",
-    "href": "research.html",
-    "title": "Research",
-    "section": "",
-    "text": "January 2026 – May 2026 | Ghana Visit: March 19–29, 2026\n\n\nThis research explored how food access in Accra, Ghana is shaped by trade-offs between affordability, flexibility, and convenience across two coexisting food systems, vibrant informal open markets and expanding modern retail. Through field interviews and observations at Dome Market and Accra Mall, the study examined how perishability, price volatility, and the absence of cold storage affect vendor livelihoods, and whether agri-tech solutions can bridge the gap.\n\n\n\n\n\n\n\nNote\n\n\n\n📄 View the full research poster below:"
-  },
-  {
-    "objectID": "research.html#field-experience-in-ghana",
-    "href": "research.html#field-experience-in-ghana",
-    "title": "Research",
-    "section": "",
-    "text": "January 2026 – May 2026 | Ghana Visit: March 19–29, 2026\n\n\nThis research explored how food access in Accra, Ghana is shaped by trade-offs between affordability, flexibility, and convenience across two coexisting food systems, vibrant informal open markets and expanding modern retail. Through field interviews and observations at Dome Market and Accra Mall, the study examined how perishability, price volatility, and the absence of cold storage affect vendor livelihoods, and whether agri-tech solutions can bridge the gap.\n\n\n\n\n\n\n\nNote\n\n\n\n📄 View the full research poster below:"
-  },
-  {
-    "objectID": "research.html#lurf-student-research-business-ethnography-curriculum-design",
-    "href": "research.html#lurf-student-research-business-ethnography-curriculum-design",
-    "title": "Research",
-    "section": "LURF Student Research: Business Ethnography Curriculum Design",
-    "text": "LURF Student Research: Business Ethnography Curriculum Design\nJune 2025 – September 2025\n\nDesigning a Course in Business Ethnography at Lawrence University\n\nNote: This course is now being offered at Lawrence University as BUEN 240.\n\nThis Lawrence University Research Fellowship (LURF) project involved designing a full undergraduate course curriculum in Business Ethnography, a field that bridges anthropological research methods with real-world business applications. The course equips students to understand consumer behavior, organizational culture, and decision-making using tools like participant observation, in-depth interviews, and cultural analysis.\n\n\n\n\n\n\n\nNote\n\n\n\n📄 View the full research poster below:"
-  },
-  {
     "objectID": "projects.html",
     "href": "projects.html",
     "title": "Projects",
@@ -105,38 +105,10 @@
     "text": "Are Horoscopes Just Vague Nonsense? (Spoiler: Yes.)\nUsing a dataset of 21,959 daily horoscope predictions spanning all 12 zodiac signs, we applied text mining tools — tokenization, sentiment analysis, TF-IDF, and regular expressions — to test whether horoscopes are actually personalized or just generic text recycled across signs. We found that nearly 80% of all planetary references were just the sun and moon, ruling planets barely showed up for their own signs, and the language used across all 12 signs was strikingly similar — suggesting horoscopes are less cosmic wisdom and more sophisticated-sounding copy-paste. View Project on GitHub —"
   },
   {
-    "objectID": "projects.html#view-project-on-github",
-    "href": "projects.html#view-project-on-github",
-    "title": "Projects",
-    "section": "View Project on GitHub",
-    "text": "View Project on GitHub"
-  },
-  {
     "objectID": "projects.html#netflix-explorer",
     "href": "projects.html#netflix-explorer",
     "title": "Projects",
     "section": "Netflix Explorer",
     "text": "Netflix Explorer\nThis project analyzed Netflix’s full content library alongside a personal watch log to explore how the platform’s catalog has evolved over time and what it reveals about viewing patterns. Using Python and pandas, the analysis examined content type distribution (movies vs. TV shows), genre trends, release year patterns, and personal ratings. Key findings include Netflix’s dramatic content expansion between 2015 and 2019 — peaking at over 1,100 titles released in a single year — and the dominance of International Movies and Dramas as the platform’s top genres. The personal watch log analysis revealed a preference for drama-heavy content, with Dynasty, Inception, and Stranger Things earning the highest ratings. View Project on GitHub —"
-  },
-  {
-    "objectID": "projects.html#view-project-on-github-1",
-    "href": "projects.html#view-project-on-github-1",
-    "title": "Projects",
-    "section": "View Project on GitHub",
-    "text": "View Project on GitHub"
-  },
-  {
-    "objectID": "projects.html#using-a-dataset-of-21959-daily-horoscope-predictions-spanning-all-12-zodiac-signs-we-applied-text-mining-tools-tokenization-sentiment-analysis-tf-idf-and-regular-expressions-to-test-whether-horoscopes-are-actually-personalized-or-just-generic-text-recycled-across-signs.-we-found-that-nearly-80-of-all-planetary-references-were-just-the-sun-and-moon-ruling-planets-barely-showed-up-for-their-own-signs-and-the-language-used-across-all-12-signs-was-strikingly-similar-suggesting-horoscopes-are-less-cosmic-wisdom-and-more-sophisticated-sounding-copy-paste.view-project-on-github",
-    "href": "projects.html#using-a-dataset-of-21959-daily-horoscope-predictions-spanning-all-12-zodiac-signs-we-applied-text-mining-tools-tokenization-sentiment-analysis-tf-idf-and-regular-expressions-to-test-whether-horoscopes-are-actually-personalized-or-just-generic-text-recycled-across-signs.-we-found-that-nearly-80-of-all-planetary-references-were-just-the-sun-and-moon-ruling-planets-barely-showed-up-for-their-own-signs-and-the-language-used-across-all-12-signs-was-strikingly-similar-suggesting-horoscopes-are-less-cosmic-wisdom-and-more-sophisticated-sounding-copy-paste.view-project-on-github",
-    "title": "Projects",
-    "section": "Using a dataset of 21,959 daily horoscope predictions spanning all 12 zodiac signs, we applied text mining tools — tokenization, sentiment analysis, TF-IDF, and regular expressions — to test whether horoscopes are actually personalized or just generic text recycled across signs. We found that nearly 80% of all planetary references were just the sun and moon, ruling planets barely showed up for their own signs, and the language used across all 12 signs was strikingly similar — suggesting horoscopes are less cosmic wisdom and more sophisticated-sounding copy-paste.View Project on GitHub",
-    "text": "Using a dataset of 21,959 daily horoscope predictions spanning all 12 zodiac signs, we applied text mining tools — tokenization, sentiment analysis, TF-IDF, and regular expressions — to test whether horoscopes are actually personalized or just generic text recycled across signs. We found that nearly 80% of all planetary references were just the sun and moon, ruling planets barely showed up for their own signs, and the language used across all 12 signs was strikingly similar — suggesting horoscopes are less cosmic wisdom and more sophisticated-sounding copy-paste.View Project on GitHub"
-  },
-  {
-    "objectID": "projects.html#this-project-analyzed-netflixs-full-content-library-alongside-a-personal-watch-log-to-explore-how-the-platforms-catalog-has-evolved-over-time-and-what-it-reveals-about-viewing-patterns.-using-python-and-pandas-the-analysis-examined-content-type-distribution-movies-vs.-tv-shows-genre-trends-release-year-patterns-and-personal-ratings.-key-findings-include-netflixs-dramatic-content-expansion-between-2015-and-2019-peaking-at-over-1100-titles-released-in-a-single-year-and-the-dominance-of-international-movies-and-dramas-as-the-platforms-top-genres.-the-personal-watch-log-analysis-revealed-a-preference-for-drama-heavy-content-with-dynasty-inception-and-stranger-things-earning-the-highest-ratings.view-project-on-github",
-    "href": "projects.html#this-project-analyzed-netflixs-full-content-library-alongside-a-personal-watch-log-to-explore-how-the-platforms-catalog-has-evolved-over-time-and-what-it-reveals-about-viewing-patterns.-using-python-and-pandas-the-analysis-examined-content-type-distribution-movies-vs.-tv-shows-genre-trends-release-year-patterns-and-personal-ratings.-key-findings-include-netflixs-dramatic-content-expansion-between-2015-and-2019-peaking-at-over-1100-titles-released-in-a-single-year-and-the-dominance-of-international-movies-and-dramas-as-the-platforms-top-genres.-the-personal-watch-log-analysis-revealed-a-preference-for-drama-heavy-content-with-dynasty-inception-and-stranger-things-earning-the-highest-ratings.view-project-on-github",
-    "title": "Projects",
-    "section": "This project analyzed Netflix’s full content library alongside a personal watch log to explore how the platform’s catalog has evolved over time and what it reveals about viewing patterns. Using Python and pandas, the analysis examined content type distribution (movies vs. TV shows), genre trends, release year patterns, and personal ratings. Key findings include Netflix’s dramatic content expansion between 2015 and 2019 — peaking at over 1,100 titles released in a single year — and the dominance of International Movies and Dramas as the platform’s top genres. The personal watch log analysis revealed a preference for drama-heavy content, with Dynasty, Inception, and Stranger Things earning the highest ratings.View Project on GitHub",
-    "text": "This project analyzed Netflix’s full content library alongside a personal watch log to explore how the platform’s catalog has evolved over time and what it reveals about viewing patterns. Using Python and pandas, the analysis examined content type distribution (movies vs. TV shows), genre trends, release year patterns, and personal ratings. Key findings include Netflix’s dramatic content expansion between 2015 and 2019 — peaking at over 1,100 titles released in a single year — and the dominance of International Movies and Dramas as the platform’s top genres. The personal watch log analysis revealed a preference for drama-heavy content, with Dynasty, Inception, and Stranger Things earning the highest ratings.View Project on GitHub"
   }
 ]
