@@ -1,0 +1,634 @@
+---
+title: "Are Horoscopes Just Vague Nonsense? (Spoiler: Yes.)"
+format: pdf
+author: "Tasnim Ara Siddique and Tahana Akram"
+---
+
+Let me paint you a picture. It's 8 AM. You're barely conscious, coffee in hand, and you open your horoscope app. It tells you: "Today is a powerful day for reflection. Your energy is shifting. Trust the process."
+You nod slowly. Wow. It really gets you.
+Meanwhile, your friend, a Scorpio, deeply intense, obviously opens their horoscope. It says: "Today is a powerful day for reflection. Your energy is shifting. Trust the process."
+Coincidence? So we had to ask, are horoscopes actually saying something real, or are they just really good at sounding deep while saying absolutely nothing?
+The stars had some explaining to do.
+Stay tuned to find out if the universe actually knows you or if it's been bluffing this whole time.
+
+```{r}
+#| label: libraries
+#| include: false
+library(tidytext)
+library(tidyverse)
+library(tidytext)
+library(stringr)
+library(ggplot2)
+library(scales)
+library(forcats)
+library(ggtext)
+library(patchwork)
+library(ggridges)    
+library(lubridate)
+library(knitr)
+
+```
+
+Using a dataset of 21,959 daily horoscope predictions spanning all 12 zodiac signs, we applied text mining tools like tokenization, sentiment analysis, TF-IDF, and regular expressions to answer one very scientific question: are horoscopes actually different from each other, or is astrology just one giant copy-paste job with different star sign labels slapped on top?
+What we found might not shock the skeptics. But it might just convince your horoscope-obsessed roommate.
+
+### The Data: 
+Our dataset comes from Horoscopes.com, scraped and made available on Kaggle.
+
+```{r}
+#| label: load-data
+#| message: false
+#| warning: false
+horoscopes_raw <- read_csv("horoscope_saved.csv")
+glimpse(horoscopes_raw)
+```
+
+It contains 21,959 daily horoscope predictions covering all 12 zodiac signs across a roughly two-year window. Each row represents one day's prediction for one sign so every morning, all 12 signs got their personalized cosmic memo. Or, as we now suspect, their not-so-personalized cosmic memo.
+The raw data arrived with four columns: the zodiac sign (stored entirely in lowercase, because apparently the universe does not believe in capitalization), a category label, a date stored as a raw number like 20200617, and the horoscope text itself.
+
+```{r}
+#| label: clean-data
+
+horoscopes <- horoscopes_raw |>
+  mutate(
+    sign = str_to_title(str_trim(sign)), # capitalize sign names
+    date = as.Date(as.character(date), format = "%Y%m%d") # convert raw numeric date to 
+    #R Date
+  ) |>
+  filter(sign %in% c(          # keep only valid zodiac signs
+    "Aries", "Taurus", "Gemini", "Cancer",
+    "Leo", "Virgo", "Libra", "Scorpio",
+    "Sagittarius", "Capricorn", "Aquarius", "Pisces"
+  )) |>
+  drop_na(horoscope) |>        # remove rows with missing text
+  mutate(
+    month     = month(date, label = TRUE, abbr = TRUE),
+    month_num = month(date),
+    season    = case_when(                     # assign meteorological season
+      month_num %in% c(12, 1, 2)  ~ "Winter",
+      month_num %in% c(3, 4, 5)   ~ "Spring",
+      month_num %in% c(6, 7, 8)   ~ "Summer",
+      month_num %in% c(9, 10, 11) ~ "Fall"
+    )
+  )
+
+cat("Total horoscopes loaded:", nrow(horoscopes), "\n")
+cat("Date range:", format(min(horoscopes$date)), "to",
+    format(max(horoscopes$date)), "\n")
+```
+
+Before any analysis, we had to clean things up, the data came in a bit rough around the edges. After all cleaning steps, all 21,959 horoscopes were retained with all 12 signs present and accounted for.
+
+To make the analysis richer, we also built a zodiac metadata reference table from scratch a tidy little tibble containing each sign's ruling planet, astrological element (Fire, Earth, Air, or Water), and modality (Cardinal, Fixed, or Mutable). We then joined this table onto our main dataset. This join turned out to be crucial later, because it let us test one of astrology's most specific and testable claims: does your ruling planet actually show up more often in your horoscope than in everyone else's?
+After all cleaning steps, all 21,959 horoscopes were retained, with all 12 signs present, we were ready to find out whether the cosmos had anything original to say.
+
+```{r zodiac-metadata}
+# Build a lookup table: each sign's ruling planet, element, modality, and plot color
+zodiac_meta <- tibble(
+  sign    = c("Aries","Taurus","Gemini","Cancer","Leo","Virgo",
+              "Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"),
+  ruling_planet = c("mars","venus","mercury","moon","sun","mercury",
+                    "venus","pluto","jupiter","saturn","uranus","neptune"),
+  element  = c("Fire","Earth","Air","Water","Fire","Earth",
+               "Air","Water","Fire","Earth","Air","Water"),
+  modality = c("Cardinal","Fixed","Mutable","Cardinal","Fixed","Mutable",
+               "Cardinal","Fixed","Mutable","Cardinal","Fixed","Mutable"),
+  sign_color = c(
+    "#E24B4A","#639922","#EF9F27","#85B7EB","#D85A30","#1D9E75",
+    "#7F77DD","#993556","#BA7517","#5F5E5A","#378ADD","#D4537E"
+  )
+)
+
+# Join metadata onto main horoscopes table so every row knows its element, planet, etc.
+horoscopes <- horoscopes |>
+  left_join(zodiac_meta, by = "sign")
+
+# Verify the join, should show all 12 signs with correct metadata
+horoscopes |>
+  distinct(sign, ruling_planet, element, modality) |>
+  arrange(element, sign)|>
+  kable(caption = "Zodiac sign metadata joined to main dataset")
+```
+
+This join turned out to be crucial later, because it let us test one of astrology's most specific and testable claims: does your ruling planet actually show up more often in your horoscope than in everyone else's? The data was tidy, the metadata was joined, and we were ready to find out whether the cosmos had anything original to say.
+
+## Regex: Do The Stars Actually Talk About Your Planet?
+If zodiac signs are supposed to have ruling planets, then we expected those planets to show up like proud parents at graduation. Mars should be cheering for Aries, Venus should be hyping up Taurus, and Mercury should be talking very fast in Gemini’s corner.
+
+```{r planet-regex}
+planets_list <- c("sun","moon","mercury","venus","mars",
+                  "jupiter","saturn","uranus","neptune","pluto")
+planet_pattern <- paste0("\\b(", paste(planets_list, collapse = "|"), ")\\b")
+# \b word boundaries: "mars" won't match inside "smarts" or "remarkable"
+planet_mentions <- horoscopes |>
+ # lowercase for case-insensitive matching
+   mutate(text_lower = str_to_lower(horoscope)) |> 
+  # extract all planet hits
+   mutate(planets_found = str_extract_all(text_lower, planet_pattern)) |>  
+  # one row per planet mention
+  unnest(planets_found) |> 
+  rename(planet_mentioned = planets_found) |>
+  mutate(
+    # flag: is this the sign's own ruling planet?
+    is_ruling = planet_mentioned == ruling_planet 
+    ) 
+
+# How often is each planet mentioned overall?
+planet_freq <- planet_mentions |>
+  count(planet_mentioned, sort = TRUE) |>
+  mutate(pct = round(n / sum(n) * 100, 1))
+  
+planet_freq |> kable(caption = "Planet mention frequencies across all horoscopes")
+```
+
+The results were immediately revealing. Out of all planet mentions across the entire dataset, the sun accounted for 43.2% and the moon accounted for 36.5% together making up nearly 80% of all planetary references. Neptune came in third at 16.2%. Mars, Mercury, and Saturn each appeared just once, at 1.4% each. Venus, Jupiter, Uranus, and Pluto? Nowhere to be found.
+So, instead the sun and moon showed up to almost every party, while Venus, Jupiter, Uranus, and Pluto apparently forgot to RSVP. The universe may be vast, but these horoscopes are working with a very small guest list.
+
+### Does Your Ruling Planet Actually Show Up in Your Horoscope?
+After finding out that the sun and moon were basically hogging the microphone, we had one more question: when the planets do get mentioned, is your own ruling planet actually getting VIP treatment, or is it stuck outside the club with Venus and Pluto?
+This is astrology’s core mechanical claim that your sign’s ruling planet actively shapes your daily cosmic experience. If astrology's planetary system were working as advertised, you would expect each sign's ruling planet to dominate its horoscope mentions ideally way above the 10% baseline you would get if all ten planets were mentioned equally at random.
+The results were not kind to astrology.
+
+```{r ruling-planet-summary}
+ruling_planet_summary <- planet_mentions |>
+  group_by(sign, ruling_planet) |>
+  summarise(
+    total_planet_mentions  = n(),
+    ruling_planet_mentions = sum(is_ruling),
+    pct_ruling = round(ruling_planet_mentions / total_planet_mentions * 100, 1),
+    .groups = "drop"
+  ) |>
+  arrange(desc(pct_ruling))
+ruling_planet_summary |> kable(caption = "Ruling planet mention rate by zodiac sign")
+
+cat("Average % of planet mentions that are the sign's OWN ruling planet:")
+cat(round(mean(ruling_planet_summary$pct_ruling, na.rm = TRUE), 1), "%\n")
+cat("If equally distributed across 10 planets, expected rate: ~10%\n\n")
+```
+
+The results were not kind to astrology. Leo came out on top with 50%,  half of all planet mentions in Leo horoscopes were the sun, Leo's ruling planet. Cancer followed at 37.5% for the moon. These two look impressive until you remember that the sun and moon already dominated everyone's horoscopes. Leo and Cancer are simply benefiting from the fact that their ruling bodies happen to be the universe's two favorite words.
+After that, the numbers fall off a cliff. Pisces managed 9.1% for Neptune, actually below the random baseline of 10%. And then: Aquarius, Aries, Capricorn, Gemini, Libra, Sagittarius, Scorpio, Taurus, and Virgo all came in at exactly 0.0%. Their ruling planets Uranus, Mars, Saturn, Mercury, Venus, Jupiter, Pluto, Venus again, and Mercury again were not mentioned in their horoscopes at all.
+The average across all 12 signs? 8.1% actually below what pure random chance would produce.
+So not only is the universe not giving your ruling planet special treatment, it is treating it like a Spirit Airlines flight this week: scheduled in theory, cancelled in reality, and nobody knows what is happening. The cosmic personalization system is, statistically speaking, broken. Or maybe astrology just put “unique planetary influence” on the syllabus and never covered it in class.
+
+### The Art of Saying Nothing: Hedge Phrases
+If planetary mentions were astrology's first broken promise, the language itself is the second. We used regular expressions to search every horoscope for classic hedge phrases, the vague, non-committal filler that makes a horoscope feel meaningful without actually committing to anything. Phrases like "you may," "you might," "perhaps," "could be," "consider," "reflect," and "things may."
+These are the linguistic equivalent of a weather forecast that says "there might be some weather today." Technically true. Completely useless.
+
+```{r hedge-phrases}
+vague_phrases  <- c("you may","you might","perhaps","consider","reflect",
+                    "could be","possible","in some ways","things may")
+vague_pattern  <- paste(vague_phrases, collapse = "|")
+
+horoscopes <- horoscopes |>
+  mutate(
+    # lowercase everything
+    text_clean  = str_to_lower(horoscope),
+    # strip punctuation & numbers
+    text_clean  = str_replace_all(text_clean, "[^a-z\\s]", " "), 
+    # collapse extra whitespace
+    text_clean  = str_squish(text_clean), 
+    # count hedge phrases per horoscope
+    vague_count = str_count(text_clean, vague_pattern), 
+    # total word count per horoscope
+    word_count  = str_count(text_clean, "\\S+") 
+  )
+
+cat("Average hedge phrases per horoscope:",
+    round(mean(horoscopes$vague_count), 2), "\n")
+cat("Roughly one hedge phrase every",
+    round(mean(horoscopes$word_count) / max(mean(horoscopes$vague_count), 1), 0),
+    "words.\n")
+```
+
+**The result:** the average horoscope contains 0.65 hedge phrases, which works out to roughly one vague non-committal statement every 74 words.
+To put that in perspective, the average horoscope is around 50 words long. So nearly every single horoscope contains at least half a hedge. The universe, it turns out, is extremely careful never to say anything it can be held accountable for.
+"You may feel a shift in energy today." Not will. May. Just in case you don't. The stars are leaving themselves an out and they have been doing it 21,959 times in this dataset alone. If horoscopes were a person, they would say, “We should totally hang out sometime,” and then never pick a date.
+
+### Tokenization: Breaking Down the Cosmic Vocabulary
+To understand what horoscopes are actually saying, we needed to break the text down into individual words a process called tokenization. Using the tidytext package, we split every horoscope into one word per row, giving us a long dataset of individual tokens ready for analysis.
+
+```{r tokenization}
+custom_stops <- tibble(word = c(
+  "day","today","week","time","life","youre","dont","youll",
+  "thats","its","ive","ll","ve","re","didn","won","isn",
+  "aren","doesn","year","people","make","good","feel",
+  "things","find","sign","just","like","new","also","now"
+))
+
+month_stops <- tibble(word = c(
+  "january","february","march","april","may","june",
+  "july","august","september","october","november","december"
+))
+
+horoscope_tokens <- horoscopes |>
+  # split each horoscope into one word per row
+  unnest_tokens(word, text_clean) |> 
+  # remove standard English stopwords ("the", "and", etc.)
+  anti_join(stop_words,   by = "word") |> 
+  # remove generic horoscope filler ("day", "feel", etc.)
+  anti_join(custom_stops, by = "word") |>
+  # remove month names (appearing as date artifacts) 
+  anti_join(month_stops,  by = "word") |>    
+  filter(str_detect(word, "^[a-z]{3,}$"))
+cat("Total meaningful tokens:", nrow(horoscope_tokens), "\n")
+```
+
+After all that filtering, we were left with 480,287 meaningful tokens across all 21,959 horoscopes.
+
+```{r top-words}
+# Top words overall
+horoscope_tokens |>
+  count(word, sort = TRUE) |>
+  slice_head(n = 12) |>
+  kable(caption = "\nTop 12 words across ALL signs combined:\n")
+```
+
+So what does the universe actually talk about? The top 12 words across all 12 signs combined were: love, energy, friends, home, enjoy, fun, planetary, exercise, mind and the word "don," a contraction fragment that slipped through the cleaning process.
+Notice anything? These are not Scorpio words. They are not Capricorn words. They are just horoscope words a generic, feel-good vocabulary shared equally by every single sign. The cosmos apparently has one playlist, and it is entirely soft pop. Love, energy, friends, fun. Repeat for all 12 signs. Repeat for 21,959 days. If Taylor Swift can write ten albums about love and still make them feel personal, maybe horoscopes are trying to do the same thing just with less melody and more “Mercury.”
+
+### Sentiment Analysis: Who Gets the Most Doom?
+After cleaning the horoscope text, we wanted to know something very important: does any zodiac sign actually get bad news, or does everyone just get the same warm little universe hug?
+So, we moved on to sentiment analysis measuring whether each sign’s horoscopes lean positive or negative. We used the AFINN lexicon, which assigns each word a numeric score from -5 for very negative words like “terrible” or “disaster” to +5 for very positive words like “outstanding” or “love.” 
+```{r, echo = FALSE}
+# Score each token with AFINN (-5 = very negative, +5 = very positive), then average by sign+month
+sentiment_monthly <- horoscope_tokens |>
+  inner_join(get_sentiments("afinn"), by = "word") |>
+  group_by(sign, month, month_num) |>
+  summarise(
+    mean_sentiment = round(mean(value), 3),
+    n_words        = n(),
+    .groups        = "drop"
+  ) |>
+  left_join(zodiac_meta, by = "sign") |>
+  mutate(
+    sign = factor(sign, levels = c( # order signs by element group for plotting
+      "Aries","Leo","Sagittarius",    
+      "Taurus","Virgo","Capricorn", 
+      "Gemini","Libra","Aquarius",    
+      "Cancer","Scorpio","Pisces"     
+    ))
+  )
+
+# Overall per-sign sentiment (collapsed across all months)
+sentiment_by_sign <- horoscope_tokens |>
+  inner_join(get_sentiments("afinn"), by = "word") |>
+  group_by(sign) |>
+  summarise(mean_sentiment = round(mean(value), 3), .groups = "drop") |>
+  left_join(zodiac_meta, by = "sign")
+
+sentiment_by_sign |> arrange(mean_sentiment)|>
+  kable(caption = "Mean AFINN sentiment score by zodiac sign")
+
+```
+
+The results are shown in the table above, ordered from most negative to most positive. And this is where the drama completely fails to arrive.
+Cancer came in last with a mean sentiment of 1.120, making it technically the least cheerful sign in the dataset. Leo came in first at 1.256, making it the most cosmically upbeat. The difference between the “saddest” sign and the “happiest” sign? 0.136 points. On a scale that runs from -5 to +5.
+To put that in perspective, that gap is so small it is basically the universe whispering instead of speaking. Cancer is not getting doom. Cancer is getting slightly less glitter on the same motivational sticker. Every single sign sits comfortably between 1.12 and 1.26 all solidly positive, all nearly identical, all receiving what can only be described as the emotional equivalent of a participation trophy from the universe.
+No sign gets warned of hardship. No sign gets told things will be genuinely difficult. The AFINN scores suggest that horoscopes, regardless of sign, are designed to make you feel vaguely good not amazing, not devastated, just emotionally moisturized enough to come back tomorrow.
+So if you were hoping astrology would expose one zodiac sign as cursed, sorry. The data says everyone is fine. Suspiciously fine. The cosmos, it turns out, has the emotional range of a motivational poster that says “You’ve got this” in cursive.
+
+## TF-IDF: What Actually Makes Each Sign "Unique"?
+After all that sentiment analysis sunshine, we wanted to see if the actual words had any real personality. Maybe Scorpio gets darker, more intense vocabulary while Libra gets soft relationship language. Maybe Aries gets bold action words while Pisces gets poetry and tears.
+Basically, we wanted to know: if we removed the zodiac label, would the horoscope still have a personality, or would it just be a vague paragraph wearing sunglasses? That is where TF-IDF comes in. TF-IDF stands for Term Frequency-Inverse Document Frequency. In simple English, it finds words that show up a lot for one specific sign but rarely for the others. A high TF-IDF score means a word is actually distinctive to that sign almost like that sign’s linguistic fingerprint. A low score means the word is so common across all signs that it does not make the sign unique at all.
+
+```{r tfidf}
+tfidf_signs <- horoscope_tokens |>
+  count(sign, word, sort = TRUE) |>
+  bind_tf_idf(word, sign, n) |>  # calculate TF-IDF score for each word per sign
+  group_by(sign) |>
+  slice_max(tf_idf, n = 6) |>
+  ungroup() |>
+  mutate(sign = factor(sign, levels = c(
+    "Aries","Taurus","Gemini","Cancer","Leo","Virgo",
+    "Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"
+  )))
+
+tfidf_signs |>
+  group_by(sign) |>
+  slice_max(tf_idf, n = 3) |>
+  select(sign, word, tf_idf) |>
+  mutate(tf_idf = round(tf_idf, 4)) |>
+  kable(caption = "Top most unique words per zodiac sign by TF-IDF score")
+```
+
+We computed TF-IDF scores for every word across all 12 signs and pulled the top results. The findings were, to put it kindly, not great for astrology. The most uniquely “Aries” word in the entire dataset? “aries.” With a TF-IDF score of 0.0211 far higher than anything else. The second most unique Aries word was “refurnishing” at 0.0003. Third was “creeping.” Similarly, the most uniquely Taurus word was “taurus” at 0.0212, followed distantly by “gateway” and “placid.” Gemini’s top word? “gemini.” Followed by “gray” and “atmospheric.” The pattern is impossible to miss. The single most distinctive thing about each sign’s horoscope is that it sometimes says the sign’s own name. After that, the “unique” vocabulary drops to almost zero words so rare and random that they seem to show up by accident, like someone spilled a Scrabble bag into the horoscope app.
+In other words, the only thing that makes a Scorpio horoscope sound like a Scorpio horoscope is the word “Scorpio.” Remove the name, and you cannot tell which sign you are reading. So astrology’s personalization strategy is basically the same as serving the same soup in twelve different bowls. Technically different signs. Same cosmic broth.
+
+### Visualization 1: The Cosmic Mood Calendar
+The heatmap below shows the mean AFINN sentiment score for each of the 12 zodiac signs across every month of the year. Each cell represents the average emotional tone of all horoscopes written for that sign in that month green means more positive, coral means more negative, and beige means the universe shrugged.
+
+```{r, echo = FALSE}
+#| label: viz1-heatmap
+#| fig-width: 13
+#| fig-height: 7
+#| fig-cap: "Mean AFINN sentiment score per zodiac sign per month. Signs are grouped by element. Scores near zero = near-neutral language which describes almost everything."
+
+ggplot(sentiment_monthly,
+       aes(x = month, y = sign, fill = mean_sentiment)) +
+
+  # Geom 1: main heatmap tiles
+  geom_tile(color = "white", linewidth = 0.5) +
+
+  # Geom 2: sentiment value labels inside tiles
+  geom_text(
+    aes(label = sprintf("%.2f", mean_sentiment),
+        color  = abs(mean_sentiment) > 0.2),
+    size = 2.8, fontface = "bold", show.legend = FALSE
+  ) +
+
+  # Geom 3: element group dividers
+  geom_hline(
+    yintercept = c(3.5, 6.5, 9.5),
+    color = "gray25", linewidth = 1, linetype = "dashed"
+  ) +
+
+ 
+  annotate("rect",
+    xmin = 10.5, xmax = 11.5,
+    ymin = 0.5, ymax = 12.5,
+    fill = NA, color = "gray30", linewidth = 0.8, linetype = "solid"
+  ) +
+  annotate("text",
+    x = 11, y = 13,
+    label = "Most variation\nthis month",
+    size = 2.6, color = "gray30", fontface = "italic",
+    hjust = 0.5, vjust = 0
+  ) +
+scale_fill_gradient2(
+    low      = "#993C1D",
+    mid      = "#F1EFE8",
+    high     = "#085041",
+    midpoint = 0,
+    limits   = c(-0.5, 1.6),       
+    oob      = scales::squish,
+    name     = "Mean AFINN sentiment",
+    breaks   = c(-0.4, 0, 0.8, 1.54),          
+    labels   = c("−0.4", "0 (neutral)", "0.8", "1.54 (max)")
+  ) +
+
+  scale_color_manual(values = c("TRUE" = "gray10", "FALSE" = "gray55")) +
+
+  annotate("text", x = Inf, y = 2,  label = "FIRE",
+           color = "#D85A30", fontface = "bold", size = 3.2, hjust = -0.3) +
+  annotate("text", x = Inf, y = 5,  label = "EARTH",
+           color = "#3B6D11", fontface = "bold", size = 3.2, hjust = -0.3) +
+  annotate("text", x = Inf, y = 8,  label = "AIR",
+           color = "#534AB7", fontface = "bold", size = 3.2, hjust = -0.3) +
+  annotate("text", x = Inf, y = 11, label = "WATER",
+           color = "#185FA5", fontface = "bold", size = 3.2, hjust = -0.3) +
+
+  scale_x_discrete(expand = expansion(add = c(0.5, 1.8))) +
+  coord_cartesian(clip = "off") +
+
+  labs(
+    title    = "The Cosmic Mood Calendar",
+    subtitle = "Mean sentiment score per zodiac sign per month, grouped by element.\nScores cluster between 1.0 and 1.4 across all signs and months the cosmos, apparently, is relentlessly mild.",
+    x        = NULL,
+    y        = NULL,
+    caption  = "Source: Daily Horoscopes Dataset (Kaggle) | Sentiment: AFINN Lexicon"
+  ) +
+
+  theme_minimal(base_size = 12) +
+  theme(
+    plot.title       = element_text(face = "bold", size = 18, margin = margin(b = 4)),
+    plot.subtitle    = element_text(size = 11, color = "gray40", margin = margin(b = 10)),
+    plot.caption     = element_text(size = 9,  color = "gray50", margin = margin(t = 10)),
+    axis.text.y      = element_text(size = 11, face = "bold"),
+    axis.text.x      = element_text(size = 10),
+    legend.position  = "bottom",
+    legend.key.width = unit(2.2, "cm"),
+    legend.title     = element_text(size = 10),
+    panel.grid       = element_blank(),
+    plot.margin      = margin(10, 70, 10, 10)
+  )
+```
+
+Signs are grouped by their astrological element: Fire signs (Aries, Leo, Sagittarius) at the bottom, Earth signs (Taurus, Virgo, Capricorn) above them, Air signs (Gemini, Libra, Aquarius) next, and Water signs (Cancer, Scorpio, Pisces) at the top. If elements actually meant something if Fire signs really do burn brighter and Water signs really do run deeper you would expect to see clear color differences between the element groups. You would expect drama. You would expect variation.
+What you actually get is a grid that looks like someone spilled the same cup of green tea across 144 cells.
+Almost every single tile sits between 1.0 and 1.4 on the AFINN scale. The entire heatmap is a nearly uniform shade of muted teal mildly positive, relentlessly consistent, and completely indistinguishable between signs and months. Fire signs do not burn brighter than Water signs. Summer does not feel different from winter. Leo in July looks almost identical to Pisces in February.
+The one genuinely interesting moment in the entire calendar is November which we highlighted with a box because it shows the most variation of any month. Cancer in November dips to -0.19, the only negative value in the entire dataset. Scorpio hits 0.41. That single month contains more variation than the other eleven months combined. And even then, the scale of that "variation" is less than two points on a ten-point range.
+In summary, the heatmap looks less like astrology and more like 144 versions of “you’re doing great, sweetie,” with November quietly having a breakdown in the corner.
+
+To make the uniformity concrete, we calculated the full sentiment range across every sign and every month combined. 
+```{r}
+#| label: heatmap-insight
+overall_range <- sentiment_monthly |>
+  summarise(
+    min_s  = min(mean_sentiment),
+    max_s  = max(mean_sentiment),
+    spread = round(max(mean_sentiment) - min(mean_sentiment), 3)
+  )
+cat("Full sentiment range across all signs and all months:\n")
+cat(overall_range$min_s, "to", overall_range$max_s, "\n")
+cat("Total spread:", overall_range$spread,
+    "points on a scale of -5 to +5.\n")
+cat("That is a", round(overall_range$spread / 10 * 100, 1),
+    "% swing across the entire year for all 12 signs.\n")
+```
+The most negative cell in the entire heatmap was -0.19, Cancer in November, the lone rebel of the dataset. The most positive was 1.544. The total spread between the absolute worst and absolute best month for any sign? 1.734 points.
+On a scale that runs from -5 to +5  a full ten-point range all 12 signs across all 12 months managed to produce only a 17.3% swing in emotional tone. The entire year of cosmic guidance, for all of humanity's zodiac signs combined, fits comfortably into less than one fifth of the available emotional spectrum.
+Think about what that means. The AFINN scale has room for words like "catastrophic," "devastating," and "horrible" at the bottom, and "outstanding," "superb," and "ecstatic" at the top. Horoscopes use almost none of it. They park themselves in a tiny band of mild positivity and never leave. No sign is ever told things will be truly terrible. No sign is ever told things will be genuinely spectacular. Everyone gets the same lukewarm cosmic optimism, month after month, sign after sign.
+The universe, it turns out, does not do extremes. It does not do drama. It does not do honesty. It does mildly encouraging and it does it for everyone, equally, forever.
+
+### Visualization 2: Every Sign Feels the Same
+Before the ridgeline plot enters the chat, we need to look at the table above. It shows the median daily sentiment score for each of the 12 zodiac signs, grouped by element. And honestly, the numbers are so similar they look like they were all afraid to be different.
+
+```{r}
+#| label: ridgeline-prep
+# Compute per-entry (per horoscope row) sentiment score
+entry_sentiment <- horoscope_tokens |>
+  inner_join(get_sentiments("afinn"), by = "word") |>
+  group_by(sign, date) |>
+  summarise(entry_sentiment = mean(value), .groups = "drop")
+# Join back to main data, clean up duplicate columns from earlier zodiac_meta join
+sentiment_per_entry <- horoscopes |>
+  mutate(sign = str_to_title(str_trim(sign))) |>
+  left_join(entry_sentiment, by = c("sign", "date")) |>
+  drop_na(entry_sentiment) |>
+  left_join(zodiac_meta, by = "sign") |>  
+  rename(
+    element       = element.x,
+    modality      = modality.x,
+    sign_color    = sign_color.x,
+    ruling_planet = ruling_planet.x
+  ) |>
+  select(-ends_with(".y")) |>
+  mutate(
+    sign = factor(sign, levels = rev(c(
+      "Aries","Leo","Sagittarius",       # Fire   rows 10,11,12
+      "Taurus","Virgo","Capricorn",      # Earth rows 7,8,9
+      "Gemini","Libra","Aquarius",       # Air  rows 4,5,6
+      "Cancer","Scorpio","Pisces"        # Water rows 1,2,3
+    )))
+  )
+
+sign_medians <- sentiment_per_entry |>
+  group_by(sign, element) |>
+  summarise(med = median(entry_sentiment, na.rm = TRUE), .groups = "drop")
+
+sign_medians |>
+  kable(
+    col.names = c("Sign", "Element", "Median Sentiment"),
+    digits = 3,
+    caption = "Median Sentiment by Sign and Element"
+  )
+```
+
+Every single sign sits between 1.15 and 1.30. Water signs, Air signs, Earth signs, Fire signs all of them are within 0.15 points of each other. Cancer is the lowest at 1.15, and both Leo and Virgo tie for the highest at 1.30. The gap between the most negative sign and the most positive sign in the entire zodiac is smaller than the difference between “good” and “sure, I guess.” But medians only tell part of the story. Maybe some signs are hiding more drama underneath. Maybe Scorpio has a darker emotional range. Maybe Leo is more consistently positive. Maybe Pisces is quietly going through it in the background.
+That is exactly what the ridgeline plot in the next section is designed to show not just the average, but the full shape of every sign’s emotional distribution across all its horoscopes. If any sign has a genuinely different cosmic personality, it should show up as a different shaped curve. A sign that gets more doom should lean left. A sign that gets nonstop positivity should lean right. A sign with wild inconsistency should spread out.
+Spoiler: the zodiac had one job, and apparently that job was to make every sign feel almost exactly the same. But let the plot expose it.
+
+```{r, echo = FALSE}
+#| label: viz2-ridgeline
+#| fig-width: 12
+#| fig-height: 9
+#| fig-cap: "Full distribution of daily horoscope sentiment scores per zodiac sign. White dot = median. Signs grouped by element. Nearly identical distributions across all 12 signs tell the real story."
+
+element_colors_ridge <- c(
+  "Aries"       = "#E24B4A", "Leo"         = "#D85A30",
+  "Sagittarius" = "#BA7517", "Taurus"      = "#639922",
+  "Virgo"       = "#1D9E75", "Capricorn"   = "#5F5E5A",
+  "Gemini"      = "#EF9F27", "Libra"       = "#7F77DD",
+  "Aquarius"    = "#378ADD", "Cancer"      = "#85B7EB",
+  "Scorpio"     = "#993556", "Pisces"      = "#D4537E"
+)
+
+ggplot(sentiment_per_entry,
+       aes(x = entry_sentiment, y = sign, fill = sign)) +
+
+  # Geom 1: density ridgelines
+  geom_density_ridges(
+    alpha          = 0.78,
+    scale          = 1.3,
+    rel_min_height = 0.01,
+    bandwidth      = 0.18,
+    show.legend    = FALSE
+  ) +
+
+  # Geom 2: vertical zero reference line
+  geom_vline(
+    xintercept = 0, linetype = "dashed",
+    color = "gray25", linewidth = 0.9
+  ) +
+
+  # Geom 3: median dot per sign
+  geom_point(
+    data        = sign_medians,
+    aes(x = med, y = sign),
+    color       = "white",
+    size        = 2.8,
+    show.legend = FALSE,
+    inherit.aes = FALSE
+  ) +
+
+  # Geom 4: median value label
+  geom_text(
+    data        = sign_medians,
+    aes(x = med, y = sign,
+        label = sprintf("%.2f", med)),
+    vjust       = -2.0,
+    size        = 2.8,
+    color       = "gray20",
+    fontface    = "bold",
+    show.legend = FALSE,
+    inherit.aes = FALSE
+  ) +
+  scale_fill_manual(values = element_colors_ridge) +
+  scale_x_continuous(
+    breaks = seq(-2, 2, by = 0.5),
+    labels = function(x) ifelse(x == 0, "0\n(Neutral)", as.character(x))
+  ) +
+    # Element labels
+ annotate("text", x = 2.75, y = 11.5, label = "FIRE",
+           color = "#D85A30", fontface = "bold", size = 3.4, hjust = 0) +
+  annotate("text", x = 2.75, y = 8.5,  label = "EARTH",
+           color = "#3B6D11", fontface = "bold", size = 3.4, hjust = 0) +
+  annotate("text", x = 2.75, y = 5.5,  label = "AIR",
+           color = "#534AB7", fontface = "bold", size = 3.4, hjust = 0) +
+  annotate("text", x = 2.75, y = 2.5,  label = "WATER",
+           color = "#185FA5", fontface = "bold", size = 3.4, hjust = 0) +
+
+  coord_cartesian(clip = "off") +
+
+  labs(
+    title    = "Every Sign Feels the Same",
+    subtitle = "Full distribution of daily sentiment scores per zodiac sign.\nWhite dot = median. If signs were truly different, these shapes would look very different from each other.",
+    x        = "Daily horoscope sentiment (AFINN score)",
+    y        = NULL,
+    caption  = "Source: Daily Horoscopes Dataset (Kaggle) | Sentiment: AFINN Lexicon"
+  ) +
+  theme_ridges(font_size = 12, grid = FALSE) +
+  theme(
+    plot.title    = element_text(face = "bold", size = 18, margin = margin(b = 4)),
+    plot.subtitle = element_text(size = 11, color = "gray40", margin = margin(b = 10)),
+    plot.caption  = element_text(size = 9,  color = "gray50", margin = margin(t = 10)),
+    axis.text.y   = element_text(size = 11, face = "bold"),
+    axis.text.x   = element_text(size = 10),
+    plot.margin   = margin(10, 80, 10, 10)
+  )
+```
+The ridgeline plot above shows the full picture. Each colored ridge represents the complete distribution of daily sentiment scores for one zodiac sign every single horoscope entry stacked into a density curve. The white dot marks the median. Signs are grouped and ordered by element: Fire at the top, Water at the bottom.
+Here is what a genuinely personalized astrology system would look like in this chart: chaos. Scorpio's curve would be wider, darker, skewed left reflecting a sign that genuinely gets more intense and negative language. Leo's would peak further right, reflecting a sign that truly gets more sunshine and glory. Cancer's would be flatter and more spread out, reflecting emotional inconsistency. The Fire group would look different from the Water group. The shapes would tell twelve different stories.
+Instead, every single ridge looks like a copy of the one above it just in a different color. Twelve smooth, symmetric, bell-shaped humps, all peaking between 1.2 and 1.3, all with nearly identical widths, all starting and ending at roughly the same points on the x-axis. The dashed line at zero marks the neutral boundary between positive and negative sentiment. Not a single sign's distribution comes close to crossing it. Every sign lives entirely in positive territory, clustered in the same narrow band, shaped exactly the same way.
+The most "negative" sign Cancer at 1.15 has a curve that is virtually indistinguishable from the most "positive" sign Leo at 1.30. If you removed the labels and the colors, you could not tell which ridge belonged to which sign. Fire signs do not burn hotter. Water signs do not run deeper. They all just... float at 1.25, give or take, forever.
+The title of this plot is not an exaggeration. Every sign genuinely feels the same.
+
+```{r}
+#| label: distribution-stats
+
+sentiment_per_entry |>
+  group_by(sign) |>
+  summarise(
+    median_sentiment = round(median(entry_sentiment, na.rm = TRUE), 3),
+    sd_sentiment     = round(sd(entry_sentiment,     na.rm = TRUE), 3),
+    pct_positive     = round(mean(entry_sentiment > 0, na.rm = TRUE) * 100, 1)
+  ) |>
+  arrange(median_sentiment)|>
+  kable (caption = "Median Sentiment")
+```
+
+The numbers behind the ridgeline plot make the story even clearer. The table above shows three statistics for each sign: the median sentiment score, the standard deviation (how spread out the scores are), and the percentage of horoscope entries that scored positively.
+Every single number in this table is remarkable not because of how different the signs are, but because of how identical they are.
+The median scores range from 1.146 for Cancer to 1.302 for Leo. That is a difference of 0.156 points separating the "most negative" sign from the "most positive" sign in the entire zodiac. To put that in human terms: if sentiment were a restaurant rating out of ten, Cancer gets a 6.15 and Leo gets a 6.30. Same restaurant. Same food. Different table.
+The standard deviations are even more striking. Every sign sits between 0.402 and 0.437 essentially identical spread. No sign is more emotionally volatile than another. No sign gets wilder swings of fortune. The cosmic variance is distributed with almost supernatural fairness across all twelve signs. And then there is the percentage of positive entries. Taurus and Aquarius scored positive on 100% of days not a single negative horoscope in the entire dataset. The lowest was Cancer, Sagittarius, Scorpio, and Aries at 98.9% positive. Meaning even the "gloomiest" signs in astrology received positive sentiment on 989 out of every 1000 days.
+The universe does not do bad days. It does not do warnings. It does not do honesty. It serves mild positivity at a rate of approximately 99.2% not because your sign is special, but because the horoscope machine is stuck on “encouraging.
+
+```{r}
+avg_pct <- round(mean(ruling_planet_summary$pct_ruling, na.rm = TRUE), 1)
+cat("\nAverage % of planet mentions = ruling planet:", avg_pct, "%\n")
+cat("Expected if random across 10 planets: 10%\n")
+cat("Actual boost:", avg_pct - 10, "percentage points.\n")
+```
+
+### The Ruling Planet Verdict: 
+We saved the most direct finding for last.
+```{r}
+#| label: ruling-planet-final
+
+ruling_planet_summary |>
+  mutate(
+    verdict = case_when(
+      pct_ruling > 20 ~ "Somewhat yes",
+      pct_ruling > 12 ~ "Marginally",
+      TRUE            ~ "Not really"
+    )
+  ) |>
+  select(sign, ruling_planet, pct_ruling, verdict) |>
+  kable(caption = "Ruling Planet")
+```
+
+The table above answers astrology’s most specific and testable claim: does your ruling planet actually show up more often in your horoscope? The verdict column says it all.
+Leo gets a “Somewhat yes” 50% of planet mentions in Leo horoscopes refer to the sun, Leo’s ruling body. Cancer also gets a “Somewhat yes,” with 37.5% of its planet mentions referring to the moon. At first, this looks like evidence for astrology. But then you remember that the sun and moon together made up nearly 80% of all planetary mentions across every sign. So Leo and Cancer are not exactly getting special treatment. They just got lucky because their ruling bodies are the horoscope writers’ favorite celebrities. After those two, the table becomes a clean sweep of “Not really.” Pisces manages 9.1% for Neptune, which is technically below the 10% we would expect from random chance if all ten planets were mentioned equally. And then nine signs in a row Aquarius, Aries, Capricorn, Gemini, Libra, Sagittarius, Scorpio, Taurus, and Virgo all sit at exactly 0.0%. Their ruling planets were not mentioned in their horoscopes at all. Not once. Uranus, Mars, Saturn, Mercury, Venus, Jupiter, and Pluto did not even get a cameo.
+The average ruling planet mention rate across all 12 signs is 8.1% not only failing to beat the random baseline of 10%, but actually falling 1.9 percentage points below it. In other words, the cosmos is not giving your ruling planet special treatment. It is under representing it compared to chance.
+So the final verdict is pretty clear: astrology promised a personalized cosmic experience, but the data found a very small cast list. The sun and moon got lead roles, Neptune got a supporting role, and everyone else was apparently cut from the movie.
+  
+### Conclusion
+After analyzing 21,959 horoscope predictions across all 12 zodiac signs, the data gives us a pretty clear answer: horoscopes are not as personal as they pretend to be. Across every sign, the most common words are basically the same: love, energy, friends, home, and fun. The sentiment scores are also packed into a tiny range between 1.15 and 1.30, meaning every sign gets almost the exact same emotional treatment. Around 99% of horoscope entries are positive, so apparently the universe never has a bad day. Very suspicious. The TF-IDF results make it even funnier. The most uniquely “Scorpio” word in Scorpio horoscopes is… “Scorpio.” Groundbreaking. The most personalized thing about the horoscope is the label at the top. Without the zodiac sign name, these predictions lose their identity faster than Gemini changes plans. And then there is the ruling planet system, which is supposed to be one of astrology’s biggest claims. If ruling planets actually mattered in daily horoscopes, they should show up more often for their signs. But they do not. In fact, the average ruling planet mention rate is lower than what random chance would predict. So the stars are not just failing the assignment, they are turning in someone else’s homework.
+So here is the final verdict: horoscopes are not trustworthy as predictions, personality readings, or cosmic advice. They are vague, recycled, overly positive paragraphs dressed up in zodiac glitter. They sound personal because they are written broadly enough for anyone to relate to them. And yet, people still read them because they feel good. That is where the Barnum effect comes in: our brains are really good at taking vague statements and saying, “Wait… that is so me.” The stars did not personally write your horoscope. Your brain just has excellent imagination and questionable fact-checking.
+So, read your horoscope if it makes your morning more fun. Just do not let it make your decisions. Because based on this data, astrology is less “written in the stars” and more “written once, copied twelve times, and sprinkled with moon dust.”
+
+# References/Sources
+
+* https://www.kaggle.com/datasets/shahp7575/horoscopes
+

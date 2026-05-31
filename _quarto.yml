@@ -1,6 +1,11 @@
 project:
   type: website
   output-dir: docs
+  render:
+    - index.qmd
+    - about.qmd
+    - research.qmd
+    - projects.qmd
 
 website:
   title: "Tahana Akram"
@@ -14,7 +19,6 @@ website:
         text: Research
       - href: projects.qmd
         text: Projects
-      
     right:
       - icon: linkedin
         href: https://www.linkedin.com/in/tahanaakram/
@@ -28,6 +32,3 @@ format:
     theme: cosmo
     css: styles.css
     toc: false
-
-
-

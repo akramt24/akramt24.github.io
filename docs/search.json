@@ -1,5 +1,68 @@
 [
   {
+    "objectID": "projects.html",
+    "href": "projects.html",
+    "title": "Projects",
+    "section": "",
+    "text": "This project explores global billionaire wealth using a structured database built in DuckDB, analyzing three core questions: which countries produce the most billionaires, how wealth is created (self-made vs. inherited), and who is most likely to become a billionaire based on gender and age. Using SQL queries and data visualization in R, we found that the United States dominates in billionaire volume, Europe leads in individual wealth, and self-made billionaires overwhelmingly outnumber those who inherited their fortunes across nearly every region. View Project on GitHub"
+  },
+  {
+    "objectID": "projects.html#they-got-billions.-we-got-data.",
+    "href": "projects.html#they-got-billions.-we-got-data.",
+    "title": "Projects",
+    "section": "",
+    "text": "This project explores global billionaire wealth using a structured database built in DuckDB, analyzing three core questions: which countries produce the most billionaires, how wealth is created (self-made vs. inherited), and who is most likely to become a billionaire based on gender and age. Using SQL queries and data visualization in R, we found that the United States dominates in billionaire volume, Europe leads in individual wealth, and self-made billionaires overwhelmingly outnumber those who inherited their fortunes across nearly every region. View Project on GitHub"
+  },
+  {
+    "objectID": "projects.html#are-horoscopes-just-vague-nonsense-spoiler-yes.",
+    "href": "projects.html#are-horoscopes-just-vague-nonsense-spoiler-yes.",
+    "title": "Projects",
+    "section": "Are Horoscopes Just Vague Nonsense? (Spoiler: Yes.)",
+    "text": "Are Horoscopes Just Vague Nonsense? (Spoiler: Yes.)\nUsing a dataset of 21,959 daily horoscope predictions spanning all 12 zodiac signs, we applied text mining tools — tokenization, sentiment analysis, TF-IDF, and regular expressions — to test whether horoscopes are actually personalized or just generic text recycled across signs. We found that nearly 80% of all planetary references were just the sun and moon, ruling planets barely showed up for their own signs, and the language used across all 12 signs was strikingly similar — suggesting horoscopes are less cosmic wisdom and more sophisticated-sounding copy-paste. View Project on GitHub —"
+  },
+  {
+    "objectID": "projects.html#netflix-explorer",
+    "href": "projects.html#netflix-explorer",
+    "title": "Projects",
+    "section": "Netflix Explorer",
+    "text": "Netflix Explorer\nThis project analyzed Netflix’s full content library alongside a personal watch log to explore how the platform’s catalog has evolved over time and what it reveals about viewing patterns. Using Python and pandas, the analysis examined content type distribution (movies vs. TV shows), genre trends, release year patterns, and personal ratings. Key findings include Netflix’s dramatic content expansion between 2015 and 2019 — peaking at over 1,100 titles released in a single year — and the dominance of International Movies and Dramas as the platform’s top genres. The personal watch log analysis revealed a preference for drama-heavy content, with Dynasty, Inception, and Stranger Things earning the highest ratings. View Project on GitHub —"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "This website is a portfolio of my academic and professional work, maintained throughout my time at Lawrence University. It showcases research projects, internship experiences, and class projects from my studies in Business Analytics, Data Science, and Entrepreneurship."
+  },
+  {
+    "objectID": "about.html#about-this-site",
+    "href": "about.html#about-this-site",
+    "title": "About",
+    "section": "",
+    "text": "This website is a portfolio of my academic and professional work, maintained throughout my time at Lawrence University. It showcases research projects, internship experiences, and class projects from my studies in Business Analytics, Data Science, and Entrepreneurship."
+  },
+  {
+    "objectID": "about.html#courses-academic-work",
+    "href": "about.html#courses-academic-work",
+    "title": "About",
+    "section": "Courses & Academic Work",
+    "text": "Courses & Academic Work\nOne highlight of my academic journey is contributing to the development of BUEN 240: Business Ethnography — a course I helped design as part of a LURF (Lawrence University Research Fellowship) project in Summer 2025 alongside Faith Onukaogu ’26 and Prof. Carla Daughtry. The course is now being offered at Lawrence University and bridges anthropological research methods with real-world business applications."
+  },
+  {
+    "objectID": "about.html#skills",
+    "href": "about.html#skills",
+    "title": "About",
+    "section": "Skills",
+    "text": "Skills\n\nAnalytics & Data: R, Python, Excel (Solver, PivotTables, VBA), Power BI\nBusiness: Market research, competitive analysis, supply chain coordination, brand strategy\nTools: Shiny, ggplot2, Canva, Microsoft Office Suite"
+  },
+  {
+    "objectID": "about.html#activities",
+    "href": "about.html#activities",
+    "title": "About",
+    "section": "Activities",
+    "text": "Activities\n\nData Science Club Member — Lawrence University\nVolunteer - KidsGive\nAccounting Tutor — Lawrence University\nLURF Research Fellow (Summer 2025)\nMailroom Assistence - Lawrence University\nDesk Worker - Wellness center, Lawrence University"
+  },
+  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "\nTahana Akram\n",
@@ -47,68 +110,5 @@
     "title": "Research",
     "section": "LURF Student Research: Business Ethnography Curriculum Design",
     "text": "LURF Student Research: Business Ethnography Curriculum Design\nJune 2025 – September 2025\n\nDesigning a Course in Business Ethnography at Lawrence University\nTahana Akram ’27, Faith Onukaogu ’26, Prof. Carla Daughtry Departments: Business and Entrepreneurship, Anthropology — Lawrence University\nThis course is now being offered at Lawrence University as BUEN 240.\nThis Lawrence University Research Fellowship (LURF) project involved designing a full undergraduate course curriculum in Business Ethnography, a field that bridges anthropological research methods with real-world business applications. The course equips students to understand consumer behavior, organizational culture, and decision-making using tools like participant observation, in-depth interviews, and cultural analysis.\n\n\n\nEthnography Research Poster"
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "This website is a portfolio of my academic and professional work, maintained throughout my time at Lawrence University. It showcases research projects, internship experiences, and class projects from my studies in Business Analytics, Data Science, and Entrepreneurship."
-  },
-  {
-    "objectID": "about.html#about-this-site",
-    "href": "about.html#about-this-site",
-    "title": "About",
-    "section": "",
-    "text": "This website is a portfolio of my academic and professional work, maintained throughout my time at Lawrence University. It showcases research projects, internship experiences, and class projects from my studies in Business Analytics, Data Science, and Entrepreneurship."
-  },
-  {
-    "objectID": "about.html#courses-academic-work",
-    "href": "about.html#courses-academic-work",
-    "title": "About",
-    "section": "Courses & Academic Work",
-    "text": "Courses & Academic Work\nOne highlight of my academic journey is contributing to the development of BUEN 240: Business Ethnography — a course I helped design as part of a LURF (Lawrence University Research Fellowship) project in Summer 2025 alongside Faith Onukaogu ’26 and Prof. Carla Daughtry. The course is now being offered at Lawrence University and bridges anthropological research methods with real-world business applications."
-  },
-  {
-    "objectID": "about.html#skills",
-    "href": "about.html#skills",
-    "title": "About",
-    "section": "Skills",
-    "text": "Skills\n\nAnalytics & Data: R, Python, Excel (Solver, PivotTables, VBA), Power BI\nBusiness: Market research, competitive analysis, supply chain coordination, brand strategy\nTools: Shiny, ggplot2, Canva, Microsoft Office Suite"
-  },
-  {
-    "objectID": "about.html#activities",
-    "href": "about.html#activities",
-    "title": "About",
-    "section": "Activities",
-    "text": "Activities\n\nData Science Club Member — Lawrence University\nVolunteer - KidsGive\nAccounting Tutor — Lawrence University\nLURF Research Fellow (Summer 2025)\nMailroom Assistence - Lawrence University\nDesk Worker - Wellness center, Lawrence University"
-  },
-  {
-    "objectID": "projects.html",
-    "href": "projects.html",
-    "title": "Projects",
-    "section": "",
-    "text": "This project explores global billionaire wealth using a structured database built in DuckDB, analyzing three core questions: which countries produce the most billionaires, how wealth is created (self-made vs. inherited), and who is most likely to become a billionaire based on gender and age. Using SQL queries and data visualization in R, we found that the United States dominates in billionaire volume, Europe leads in individual wealth, and self-made billionaires overwhelmingly outnumber those who inherited their fortunes across nearly every region. View Project on GitHub"
-  },
-  {
-    "objectID": "projects.html#they-got-billions.-we-got-data.",
-    "href": "projects.html#they-got-billions.-we-got-data.",
-    "title": "Projects",
-    "section": "",
-    "text": "This project explores global billionaire wealth using a structured database built in DuckDB, analyzing three core questions: which countries produce the most billionaires, how wealth is created (self-made vs. inherited), and who is most likely to become a billionaire based on gender and age. Using SQL queries and data visualization in R, we found that the United States dominates in billionaire volume, Europe leads in individual wealth, and self-made billionaires overwhelmingly outnumber those who inherited their fortunes across nearly every region. View Project on GitHub"
-  },
-  {
-    "objectID": "projects.html#are-horoscopes-just-vague-nonsense-spoiler-yes.",
-    "href": "projects.html#are-horoscopes-just-vague-nonsense-spoiler-yes.",
-    "title": "Projects",
-    "section": "Are Horoscopes Just Vague Nonsense? (Spoiler: Yes.)",
-    "text": "Are Horoscopes Just Vague Nonsense? (Spoiler: Yes.)\nUsing a dataset of 21,959 daily horoscope predictions spanning all 12 zodiac signs, we applied text mining tools — tokenization, sentiment analysis, TF-IDF, and regular expressions — to test whether horoscopes are actually personalized or just generic text recycled across signs. We found that nearly 80% of all planetary references were just the sun and moon, ruling planets barely showed up for their own signs, and the language used across all 12 signs was strikingly similar — suggesting horoscopes are less cosmic wisdom and more sophisticated-sounding copy-paste. View Project on GitHub —"
-  },
-  {
-    "objectID": "projects.html#netflix-explorer",
-    "href": "projects.html#netflix-explorer",
-    "title": "Projects",
-    "section": "Netflix Explorer",
-    "text": "Netflix Explorer\nThis project analyzed Netflix’s full content library alongside a personal watch log to explore how the platform’s catalog has evolved over time and what it reveals about viewing patterns. Using Python and pandas, the analysis examined content type distribution (movies vs. TV shows), genre trends, release year patterns, and personal ratings. Key findings include Netflix’s dramatic content expansion between 2015 and 2019 — peaking at over 1,100 titles released in a single year — and the dominance of International Movies and Dramas as the platform’s top genres. The personal watch log analysis revealed a preference for drama-heavy content, with Dynasty, Inception, and Stranger Things earning the highest ratings. View Project on GitHub —"
   }
 ]
