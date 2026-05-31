@@ -7,3 +7,5 @@ title: "Projects"
 [Are Horoscopes Just Vague Nonsense? (Spoiler: Yes.)](horoscope.html)
 
 [Netflix Explorer](netflix.html)
+
+[Cleanr](https://github.com/ADC-405-S26/cleanr)
