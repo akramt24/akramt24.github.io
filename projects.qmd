@@ -8,4 +8,4 @@ title: "Projects"
 
 [Netflix Explorer](netflix.html)
 
-[Cleanr](cleanr.html)qua
+[Cleanr](cleanr.html)
