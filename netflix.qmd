@@ -1,0 +1,15 @@
+---
+title: "Netflix Explorer"
+format: html 
+---
+
+This project analyzed Netflix's full content library alongside a personal watch log to explore how the platform's catalog has evolved over time. Using Python and pandas, the analysis examined content type distribution, genre trends, release year patterns, and personal ratings.
+
+![](images/movie_vs_tv.png){width=80%}
+
+![](images/titles_per_year.png){width=80%}
+
+![](images/top_10_genres.png){width=80%}
+
+![](images/my_watchlog_ratings.png){width=80%}
+

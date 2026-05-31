@@ -6,6 +6,7 @@ project:
     - about.qmd
     - research.qmd
     - projects.qmd
+    - netflix.qmd
 
 website:
   title: "Tahana Akram"
