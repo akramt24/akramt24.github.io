@@ -12,7 +12,7 @@ title: "Research"
 
 This research explored how food access in Accra, Ghana is shaped by trade-offs between affordability, flexibility, and convenience across two coexisting food systems — vibrant informal open markets and expanding modern retail. Through field interviews and observations at Dome Market and Accra Mall, the study examined how perishability, price volatility, and the absence of cold storage affect vendor livelihoods, and whether agri-tech solutions can bridge the gap.
 
-📄 [View Full Research Poster (PDF)](posters/ghana_poster.pdf)
+![Ghana Research Poster](images/Ghana poster.jpg){width=100%}
 
 ---
 
@@ -28,4 +28,4 @@ This course is now being offered at Lawrence University as **BUEN 240**.
 
 This Lawrence University Research Fellowship (LURF) project involved designing a full undergraduate course curriculum in Business Ethnography, a field that bridges anthropological research methods with real-world business applications. The course equips students to understand consumer behavior, organizational culture, and decision-making using tools like participant observation, in-depth interviews, and cultural analysis.
 
-📄 [View Full Research Poster (PDF)](posters/ethnography_poster.pdf)
+![Ethnography Research Poster](images/Business Ethnography - Curriculum Design.jpg){width=100%}
