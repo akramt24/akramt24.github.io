@@ -8,9 +8,8 @@ title: "Research"
 ### From Dome to the Mall: What Accra's Food Markets Reveal About Trade-offs, Tech, & Tomorrow
 
 *Tahana Akram '27, Business and Entrepreneurship, Lawrence University*
-*Funded by the Rodger P. Kennedy and Mariette B. Kennedy Fund | Advised by Professor Claudena Skran*
 
-This research explored how food access in Accra, Ghana is shaped by trade-offs between affordability, flexibility, and convenience across two coexisting food systems — vibrant informal open markets and expanding modern retail. Through field interviews and observations at Dome Market and Accra Mall, the study examined how perishability, price volatility, and the absence of cold storage affect vendor livelihoods, and whether agri-tech solutions can bridge the gap.
+This research explored how food access in Accra, Ghana is shaped by trade-offs between affordability, flexibility, and convenience across two coexisting food systems, vibrant informal open markets and expanding modern retail. Through field interviews and observations at Dome Market and Accra Mall, the study examined how perishability, price volatility, and the absence of cold storage affect vendor livelihoods, and whether agri-tech solutions can bridge the gap.
 
 ![Ghana Research Poster](images/Ghana poster.jpg){width=100%}
 

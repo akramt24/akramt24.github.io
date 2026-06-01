@@ -6,12 +6,12 @@ title: "About"
 
 This website is a portfolio of my academic and professional work, maintained throughout my time at 
 Lawrence University. It showcases research projects, internship experiences, and class projects 
-from my studies in Business Analytics, Data Science, and Entrepreneurship.
+from my studies in Business Analytics and Data Science.
 
 ## Courses & Academic Work
 
 One highlight of my academic journey is contributing to the development of **BUEN 240: Business 
-Ethnography** — a course I helped design as part of a LURF (Lawrence University Research Fellowship) 
+Ethnography** a course I helped design as part of a LURF (Lawrence University Research Fellowship) 
 project in Summer 2025 alongside Faith Onukaogu '26 and Prof. Carla Daughtry. The course is now 
 being offered at Lawrence University and bridges anthropological research methods with real-world 
 business applications.
