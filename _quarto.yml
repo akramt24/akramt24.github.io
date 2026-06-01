@@ -20,7 +20,7 @@ website:
         text: Research
       - href: projects.qmd
         text: Projects
-  right:
+    right:
       - icon: linkedin
         href: https://www.linkedin.com/in/tahanaakram/
         aria-label: LinkedIn
