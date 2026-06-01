@@ -20,12 +20,12 @@ website:
         text: Research
       - href: projects.qmd
         text: Projects
-    right:
+  right:
       - icon: linkedin
         href: https://www.linkedin.com/in/tahanaakram/
         aria-label: LinkedIn
       - icon: github
-        href: https://github.com/akramt24
+        href: https://github.com/akramt24/akramt24.github.io
         aria-label: GitHub
 
 format:
