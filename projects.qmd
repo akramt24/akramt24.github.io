@@ -9,3 +9,5 @@ title: "Projects"
 [Netflix Explorer](netflix.html)
 
 [Cleanr](cleanr.html)
+
+[The Split-Apply-Combine Strategy for Data Analysis](splitapply.html)
